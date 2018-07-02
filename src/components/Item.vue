@@ -9,12 +9,13 @@
 </template>
 
 <script>
+  import PubSub from 'pubsub-js'
   export default {
     // 声明接收属性
     // props: ['todo']
     props: {
       todo: Object, // 属性名和属性值的类型
-      deleteTodo: Function,
+//      deleteTodo: Function,
       index: Number
     },
 
@@ -34,6 +35,10 @@
           this.isShow = false
           this.bgColor = 'white'
         }
+      },
+      deleteTodo () {
+        // 发布消息(deleteTodo)
+        PubSub.publish('deleteTodo', this.index)
       }
     }
   }

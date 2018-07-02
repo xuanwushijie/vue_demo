@@ -2,13 +2,15 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <todo-header :addTodo="addTodo"/>
-      <List :todos="todos" :deleteTodo="deleteTodo"/>
+     <!-- <List :todos="todos" :deleteTodo="deleteTodo"/>-->
+      <List :todos="todos"/>
       <todo-footer :todos="todos" :deleteComputed="deleteComputed" :selectAll="selectAll"/>
     </div>
   </div>
 </template>
 
 <script>
+  import PubSub from 'pubsub-js'
   import Header from './components/Header.vue'
   import List from './components/List.vue'
   import Footer from './components/Footer.vue'
@@ -30,7 +32,12 @@
       List,
       TodoFooter: Footer
     },
-
+    mounted () {
+      // 订阅消息(deleteTodo)
+      PubSub.subscribe('deleteTodo', (msg, index) => {
+        this.deleteTodo(index)
+      })
+    },
     methods: {
       addTodo (todo) {
         this.todos.unshift(todo)
